@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="dashboard">
+    <div class="dashboard-header">
+        <h2>Patient Dashboard</h2>
+        <span>Welcome, {{ username }}</span>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="user-info">
+            <h3>Quick Actions</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <a href="{{ url_for('symptoms') }}" class="btn btn-primary">Check Symptoms</a>
+                <a href="{{ url_for('remedies') }}" class="btn btn-primary">Home Remedies</a>
+                <a href="{{ url_for('doctors') }}" class="btn btn-primary">Find Doctors</a>
+                <a href="{{ url_for('facilities') }}" class="btn btn-primary">Find Facilities</a>
+                <a href="{{ url_for('health_tracking') }}" class="btn btn-primary">Health Tracking</a>
+            </div>
+        </div>
+        
+        <div class="appointments">
+            <h3>Your Appointments</h3>
+            
+            {% if appointments %}
+                {% for appointment in appointments %}
+                <div class="appointment-card">
+                    <p><strong>Dr. {{ appointment.doctor_name }}</strong> - {{ appointment.specialty }}</p>
+                    <p><i class="far fa-calendar"></i> {{ appointment.date }} - {{ appointment.time }}</p>
+                    <p><i class="fas fa-map-marker-alt"></i> {{ appointment.hospital }}</p>
+                    <p>Status: <span style="color: {% if appointment.status == 'scheduled' %}green{% else %}orange{% endif %};">
+                        {{ appointment.status }}
+                    </span></p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>You don't have any appointments scheduled.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

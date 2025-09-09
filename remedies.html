@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2 style="text-align: center; margin-bottom: 30px;">Home Remedies</h2>
+    
+    <div style="max-width: 600px; margin: 0 auto 30px;">
+        <form method="POST" action="{{ url_for('remedies') }}">
+            <div class="form-group">
+                <label for="symptom">Search for remedies by symptom:</label>
+                <input type="text" class="form-control" id="symptom" name="symptom" 
+                       value="{{ symptom }}" placeholder="e.g., headache, cough, fever">
+            </div>
+            <button type="submit" class="btn btn-primary">Find Remedies</button>
+            <a href="{{ url_for('remedies') }}" class="btn btn-secondary">Show All</a>
+        </form>
+    </div>
+    
+    {% if remedies %}
+        {% if symptom %}
+        <h3 style="margin-bottom: 20px;">Remedies for {{ remedies.name }}</h3>
+        {% else %}
+        <h3 style="margin-bottom: 20px;">Common Home Remedies</h3>
+        {% endif %}
+        
+        <div class="remedies-container">
+            {% if symptom %}
+                {% for remedy in remedies.remedies %}
+                <div class="remedy-card">
+                    <h4>{{ remedy.title }}</h4>
+                    <p>{{ remedy.description }}</p>
+                    
+                    <h5>Steps:</h5>
+                    <ol>
+                        {% for step in remedy.steps %}
+                        <li>{{ step }}</li>
+                        {% endfor %}
+                    </ol>
+                    
+                    <div class="precaution">
+                        <strong>Precautions:</strong> {{ remedy.precautions }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                {% for symptom_key, symptom_data in remedies.items() %}
+                <div class="symptom-section">
+                    <h4>{{ symptom_data.name }}</h4>
+                    <a href="{{ url_for('remedies', symptom=symptom_key) }}" class="btn btn-primary">View Remedies</a>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% else %}
+    <p style="text-align: center;">No remedies found for "{{ symptom }}". Try searching for something else.</p>
+    {% endif %}
+</section>
+
+<style>
+    .remedies-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .remedy-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .remedy-card h4 {
+        color: var(--primary);
+        margin-bottom: 10px;
+    }
+    
+    .remedy-card h5 {
+        margin: 15px 0 10px 0;
+        color: var(--dark);
+    }
+    
+    .remedy-card ol {
+        padding-left: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .remedy-card ol li {
+        margin-bottom: 5px;
+    }
+    
+    .precaution {
+        background: #fff3e0;
+        padding: 10px 15px;
+        border-left: 4px solid var(--accent);
+        border-radius: 4px;
+        margin-top: 15px;
+    }
+    
+    .symptom-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+{% endblock %}

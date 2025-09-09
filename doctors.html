@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2 style="text-align: center; margin-bottom: 30px;">Find Doctors</h2>
+    
+    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+        <select class="form-control" onchange="location = this.value;" style="flex: 1;">
+            <option value="{{ url_for('doctors') }}">All Specialties</option>
+            <option value="{{ url_for('doctors', specialty='cardiology') }}" 
+                    {% if request.args.get('specialty') == 'cardiology' %}selected{% endif %}>Cardiology</option>
+            <option value="{{ url_for('doctors', specialty='dermatology') }}"
+                    {% if request.args.get('specialty') == 'dermatology' %}selected{% endif %}>Dermatology</option>
+            <option value="{{ url_for('doctors', specialty='neurology') }}"
+                    {% if request.args.get('specialty') == 'neurology' %}selected{% endif %}>Neurology</option>
+            <option value="{{ url_for('doctors', specialty='pediatrics') }}"
+                    {% if request.args.get('specialty') == 'pediatrics' %}selected{% endif %}>Pediatrics</option>
+            <option value="{{ url_for('doctors', specialty='orthopedics') }}"
+                    {% if request.args.get('specialty') == 'orthopedics' %}selected{% endif %}>Orthopedics</option>
+            <option value="{{ url_for('doctors', specialty='general') }}"
+                    {% if request.args.get('specialty') == 'general' %}selected{% endif %}>General Medicine</option>
+        </select>
+    </div>
+    
+    {% if doctors %}
+    <div class="doctor-grid">
+        {% for doctor in doctors %}
+        <div class="doctor-card">
+            <div class="doctor-img" style="background-image: url('https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80');"></div>
+            <div class="doctor-info">
+                <h3 class="doctor-name">Dr. {{ doctor.name }}</h3>
+                <p class="doctor-specialty">{{ doctor.specialty }}</p>
+                <p>{{ doctor.hospital }}</p>
+                <p>Experience: {{ doctor.experience }} years</p>
+                <p><i class="fas fa-star"></i> {{ doctor.rating }} rating</p>
+                
+                <form method="POST" action="{{ url_for('book_appointment_route') }}" style="margin-top: 15px;">
+                    <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+                    <div class="form-group">
+                        <label for="date-{{ doctor.id }}">Date</label>
+                        <input type="date" class="form-control" id="date-{{ doctor.id }}" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="time-{{ doctor.id }}">Time</label>
+                        <select class="form-control" id="time-{{ doctor.id }}" name="time" required>
+                            <option value="">Select time</option>
+                            <option value="09:00">09:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="13:00">01:00 PM</option>
+                            <option value="14:00">02:00 PM</option>
+                            <option value="15:00">03:00 PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">No doctors found for the selected specialty.</p>
+    {% endif %}
+</section>
+{% endblock %}

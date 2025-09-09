@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="max-width: 600px; margin: 0 auto; text-align: center;">
+    <div style="background: white; padding: 30px; border-radius: 8px; box-shadow: var(--card-shadow);">
+        <div style="color: green; font-size: 4rem; margin-bottom: 20px;">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 style="margin-bottom: 20px;">Appointment Confirmed!</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h3>Appointment Details</h3>
+            <p><strong>Doctor:</strong> Dr. {{ appointment.doctor_name }}</p>
+            <p><strong>Specialty:</strong> {{ appointment.specialty }}</p>
+            <p><strong>Date:</strong> {{ appointment.date }}</p>
+            <p><strong>Time:</strong> {{ appointment.time }}</p>
+            <p><strong>Status:</strong> <span style="color: green;">Confirmed</span></p>
+        </div>
+        
+        <p style="margin-bottom: 20px;">You will receive a confirmation email shortly.</p>
+        
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+            <a href="{{ url_for('doctors') }}" class="btn btn-secondary">Book Another Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

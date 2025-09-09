@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare - Exercise Videos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c7da0 0%, #01497c 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: #468faf;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2a6f97;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .btn-danger {
+            background-color: #e63946;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c1121f;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #01497c;
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #01497c;
+        }
+        
+        .page-title p {
+            font-size: 1.2rem;
+            color: #468faf;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #a9d6e5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: #2c7da0;
+            color: white;
+            border-color: #2c7da0;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .resource-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .resource-content {
+            padding: 20px;
+        }
+        
+        .resource-content h3 {
+            color: #01497c;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+        
+        .resource-content p {
+            color: #468faf;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .video-info {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background: #01497c;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin: 15px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+            
+            .auth-buttons {
+                margin-top: 15px;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .page-title p {
+                font-size: 1rem;
+            }
+            
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="{{ url_for('index') }}" class="logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>MediCare</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if 'user_id' in session %}
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('symptoms') }}">Symptoms Check</a></li>
+                    <li><a href="{{ url_for('remedies') }}">Home Remedies</a></li>
+                    <li><a href="{{ url_for('doctors') }}">Doctors</a></li>
+                    <li><a href="{{ url_for('facilities') }}">Facilities</a></li>
+                    <li><a href="{{ url_for('health_tracking') }}">Health Tracking</a></li>
+                    <li><a href="{{ url_for('health_guides') }}">Guides</a></li>
+                    <li><a href="{{ url_for('healthy_recipes') }}">Recipes</a></li>
+                    <li><a href="{{ url_for('exercise_videos') }}" class="active">Videos</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                {% if 'user_id' in session %}
+                <span>Welcome, {{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>Exercise Videos</h1>
+            <p>Follow along with these guided workouts for all fitness levels</p>
+        </div>
+        
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">All Videos</button>
+            <button class="filter-btn" data-filter="cardio">Cardio</button>
+            <button class="filter-btn" data-filter="strength">Strength</button>
+            <button class="filter-btn" data-filter="yoga">Yoga & Stretching</button>
+            <button class="filter-btn" data-filter="beginner">Beginner</button>
+            <button class="filter-btn" data-filter="advanced">Advanced</button>
+        </div>
+        
+        <div class="resource-grid">
+            <div class="resource-card" data-category="cardio beginner">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/UItWltVZZmE" title="Low Impact Cardio Workout" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Low Impact Cardio for Beginners</h3>
+                    <p>30-minute heart-healthy cardio workout that's easy on the joints but great for cardiovascular health.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 30 mins</span>
+                        <span><i class="fas fa-heart"></i> Cardio</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="strength">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/JyUqwkVpsi8" title="Full Body Strength Training" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Full Body Strength Workout</h3>
+                    <p>45-minute strength training session targeting all major muscle groups with minimal equipment.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 45 mins</span>
+                        <span><i class="fas fa-dumbbell"></i> Strength</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="yoga beginner">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/v7AYKMP6rOE" title="Gentle Yoga for Stress Relief" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Gentle Yoga for Stress Relief</h3>
+                    <p>Restorative yoga practice focusing on relaxation, deep breathing, and gentle stretching.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 40 mins</span>
+                        <span><i class="fas fa-spa"></i> Yoga</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="cardio advanced">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/ml6cT4AZdqI" title="HIIT Workout" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>HIIT for Advanced Fitness</h3>
+                    <p>High-intensity interval training workout to boost metabolism and improve cardiovascular endurance.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 25 mins</span>
+                        <span><i class="fas fa-heart"></i> HIIT</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="yoga">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/4pKly2JojMw" title="Yoga for Flexibility" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Yoga for Flexibility</h3>
+                    <p>45-minute yoga flow focused on increasing flexibility and range of motion throughout the body.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 45 mins</span>
+                        <span><i class="fas fa-spa"></i> Yoga</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="strength beginner">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/GF5aB34kY2A" title="Beginner Strength Training" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Beginner Strength Training</h3>
+                    <p>Introduction to strength training with proper form and technique for major exercises.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 35 mins</span>
+                        <span><i class="fas fa-dumbbell"></i> Strength</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="cardio">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/6SdLs7H4EU8" title="Dance Workout" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Fun Dance Cardio</h3>
+                    <p>Energetic dance workout that makes cardio fun while burning calories and improving coordination.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 30 mins</span>
+                        <span><i class="fas fa-heart"></i> Cardio</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+            
+            <div class="resource-card" data-category="yoga">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/4C-gxOE0j7s" title="Morning Yoga Routine" allowfullscreen></iframe>
+                </div>
+                <div class="resource-content">
+                    <h3>Morning Yoga Routine</h3>
+                    <p>20-minute yoga sequence to energize your body and calm your mind for the day ahead.</p>
+                    <div class="video-info">
+                        <span><i class="fas fa-clock"></i> 20 mins</span>
+                        <span><i class="fas fa-spa"></i> Yoga</span>
+                    </div>
+                    <button class="btn btn-primary">Save Video</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 MediCare Healthcare System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const filter = button.getAttribute('data-filter');
+                    
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Filter resources
+                    const resources = document.querySelectorAll('.resource-card');
+                    
+                    resources.forEach(resource => {
+                        if (filter === 'all') {
+                            resource.style.display = 'block';
+                        } else {
+                            const categories = resource.getAttribute('data-category').split(' ');
+                            if (categories.includes(filter)) {
+                                resource.style.display = 'block';
+                            } else {
+                                resource.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2 style="text-align: center; margin-bottom: 30px;">Find Medical Facilities</h2>
+    
+    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+        <input type="text" class="form-control" placeholder="Enter your location" style="flex: 2;">
+        <select class="form-control" style="flex: 1;">
+            <option value="">All facility types</option>
+            <option value="hospital">Hospital</option>
+            <option value="clinic">Clinic</option>
+            <option value="pharmacy">Pharmacy</option>
+        </select>
+        <button class="btn btn-primary">Search</button>
+    </div>
+    
+    {% if facilities %}
+    <div>
+        {% for facility in facilities %}
+        <div class="facility-card">
+            <div class="facility-icon">
+                {% if facility.type == 'hospital' %}
+                <i class="fas fa-hospital"></i>
+                {% elif facility.type == 'clinic' %}
+                <i class="fas fa-clinic-medical"></i>
+                {% else %}
+                <i class="fas fa-pills"></i>
+                {% endif %}
+            </div>
+            <div class="facility-info">
+                <h3>{{ facility.name }}</h3>
+                <p>{{ facility.address }}, {{ facility.city }}</p>
+                <p>{{ facility.phone }}</p>
+            </div>
+            <div class="facility-distance">{{ facility.distance }} miles</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center;">No facilities found. Try a different search.</p>
+    {% endif %}
+</section>
+{% endblock %}

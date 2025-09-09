@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section style="max-width: 800px; margin: 0 auto;">
+    <h2 style="text-align: center; margin-bottom: 30px;">Describe Your Symptoms</h2>
+    
+    <form method="POST" action="{{ url_for('symptoms') }}">
+        <div class="form-group">
+            <label for="symptoms">What symptoms are you experiencing?</label>
+            <textarea class="form-control" id="symptoms" name="symptoms" rows="5" 
+                      placeholder="Describe your symptoms in detail..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Analyze Symptoms</button>
+    </form>
+</section>
+{% endblock %}
